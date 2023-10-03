@@ -22,7 +22,21 @@ class _HomepageState extends State<Homepage> {
         ),
       ),
       body: Center(
-        child: readData(),
+        child: Column(
+          children: [
+            Container(
+              child: readData(),
+            ),
+            ElevatedButton(
+              onPressed: updateData,
+              child: text('Update'),
+            ),
+            ElevatedButton(
+              onPressed: deleteData,
+              child: text('Delete'),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -40,5 +54,21 @@ class _HomepageState extends State<Homepage> {
         ],
       );
     });
+  }
+
+  updateData() {
+    DocumentReference reference =
+        FirebaseFirestore.instance.collection('User').doc(widget.namectrl);
+
+    Map<String, dynamic> userdata = {};
+
+    reference.update(userdata).whenComplete(() => print('Updated Successful'));
+  }
+
+  deleteData() {
+    DocumentReference reference =
+        FirebaseFirestore.instance.collection('User').doc(widget.namectrl);
+
+    reference.delete().whenComplete(() => print('Deleted Successful'));
   }
 }
